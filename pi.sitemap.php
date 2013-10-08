@@ -5,8 +5,8 @@ class Plugin_sitemap extends Plugin {
 	var $meta = array(
 		'name'       => 'Sitemap',
 		'version'    => '0.2',
-		'author'     => 'Max Westen',
-		'author_url' => 'http://dlmax.org'
+		'author'     => 'Patrick Haney',
+		'author_url' => 'http://patrickhaney.com'
 	);
 
 	public function __construct() {
@@ -23,6 +23,10 @@ class Plugin_sitemap extends Plugin {
 	public function index() {
 		$output = false;
 		$url = '/';
+
+		// Add homepage to data
+		$root_item = array('slug' => '/page','url'=>'');
+		$this->parseFileItem($root_item);
 
 		$this->parseTreeData( $url );    
 		if( count( $this->content ) > 0 ) {
@@ -41,11 +45,7 @@ class Plugin_sitemap extends Plugin {
 		$url = Path::resolve( $url );
 		$tree = Statamic::get_content_tree( $url, 1, $this->max_entry_limit, true, false, true, false, false );
 
-		// Add Homepage
-		$root_item = array( 'slug' => '/page', 'url' => '' );
-		$this->parseFileItem( $root_item );
-
-		// Now add all other items
+		// Loop through document tree
 		if( count( $tree ) > 0 ) {
 			foreach( $tree as $item ) {
 				if( $item['type'] == 'file' ) {
