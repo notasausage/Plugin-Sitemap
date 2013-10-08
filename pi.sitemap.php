@@ -2,7 +2,7 @@
 
 class Plugin_sitemap extends Plugin {
 
-	pubilc $meta = array(
+	var $meta = array(
 		'name'       => 'Sitemap',
 		'version'    => '0.2',
 		'author'     => 'Max Westen',
