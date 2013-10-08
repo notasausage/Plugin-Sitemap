@@ -76,5 +76,10 @@ priority: 0
 The service was fantastic, would definitely tell my friends about it.
 ```
 
+## Hiding nested items
+By setting the priority of a page to `0`, the Sitemap add-on will automatically skip any entries or sub-pages within that folder when building the sitemap XML file. This comes in handy if you want to hide any entries in a folder without having to set the priority on every entry manually.
+
+More options to handle nested elements will be added at some point (especially for multiple nested layers).
+
 # Disclaimer
 At this point this add-on has been modified from its original version to include some extra functionality. Hat tip to Max Westen for creating it in the first place. If you find any bugs or decide you want to contribute to the code, fork the project in Github and share your changes by initiating pull requests. Thanks!

@@ -54,12 +54,16 @@ class Plugin_sitemap extends Plugin {
 				
 				if( $item['type'] == 'folder' ) {
 					$this->parseFolderItem( $item );
+					$data = $this->getData( "page", $item['url'] );
+					$priority = $this->setPriority( $data );
 					
-					if( $item['has_children'] ) {
+					// Don't parse children if folder priority is 0
+					if( $item['has_children'] && $priority ) {
 						$this->parseTreeData( $item['url'] );
 					}
 				
-					if( $item['has_entries'] ) {
+					// Don't parse entries if folder priority is 0
+					if( $item['has_entries'] && $priority ) {
 						$list = Statamic::get_content_list( $item['url'], $this->max_entry_limit, 0, false, true, 'date', 'desc' );
 						foreach( $list as $entry ) {
 							$this->parseEntryItem( $entry );
@@ -76,7 +80,7 @@ class Plugin_sitemap extends Plugin {
 	 * @param $item
 	 **/
 	private function parseFolderItem( $item ) {
-		$data = Statamic::get_content_meta( "page", $item['url'] );    
+		$data = $this->getData( "page", $item['url'] );    
 		$permalink = Path::tidy( $this->site_url . '/' . $item['url'] );
 		$moddate = array_key_exists( 'last_modified', $data ) ? date( "Y-m-d", $data['last_modified'] ) : date( "Y-m-d", strtotime("-1 day" ) );
 		$priority = $this->setPriority($data);
@@ -98,7 +102,7 @@ class Plugin_sitemap extends Plugin {
 	 * @param $folder
 	 **/
 	private function parseFileItem( $item, $folder = null ) {
-		$data = Statamic::get_content_meta( $item['slug'], $folder );
+		$data = $this->getData( $item['slug'], $folder );
 		$moddate = ( array_key_exists( 'last_modified', $data ) ) ? $data['last_modified'] : date( "Y-m-d", strtotime( "-1 day" ) );
 		$permalink = Path::tidy( $this->site_url . '/' . $item['url'] );
 		$priority = $this->setPriority($data);
@@ -160,4 +164,14 @@ class Plugin_sitemap extends Plugin {
 			return 0.5;
 		}
 	} // END function setPriority()
+	
+	/**
+	 * This returns the data for a folder, page or entry.
+	 * @param $slug
+	 * @param $folder
+	 * @return array
+	 **/
+	private function getData( $slug, $folder = null ) {
+		return Statamic::get_content_meta( $slug, $folder );
+	} // END function getData()
 } // END class Plugin_sitemap
