@@ -43,7 +43,10 @@ For example, the site's homepage would appear in the XML file like so:
 
 The page's URL is generated automatically. The last modification time (`lastmod`) comes from Statamic's own Publish Date for that item and is used to determine the change frequency (`changefreq`) of the URL. The importance of the page, or `priority` (defined in the Sitemaps XML protocol), can be any number from 0 to 1 (where 0 is not important, and 1 is very important) and is set to 0.5 by default.
 
-# Custom priorities
+## Sitemap Protocol
+For more on how the Sitemaps XML Protocol works, visit: http://www.sitemaps.org/protocol.html
+
+# Custom priority
 If you want to change the priority for a folder, page or entry, you can set the priority on a case-by-case basis using the YAML prematter of the markdown file for that item.
 
 For example, to give the homepage of your site a priority of 0.8, edit your `_content/page.md` file and add `priority: 0.8` to the YAML prematter like so:
