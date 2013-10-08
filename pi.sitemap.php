@@ -53,7 +53,7 @@ class Plugin_sitemap extends Plugin {
 				}
 				
 				if( $item['type'] == 'folder' ) {
-					$this->parsFolderItem( $item );
+					$this->parseFolderItem( $item );
 					
 					if( $item['has_children'] ) {
 						$this->parseTreeData( $item['url'] );
@@ -75,7 +75,7 @@ class Plugin_sitemap extends Plugin {
 	 * This adds an item to the sitemap containing a folder (checks page.md)
 	 * @param $item
 	 **/
-	private function parsFolderItem( $item ) {
+	private function parseFolderItem( $item ) {
 		$data = Statamic::get_content_meta( "page", $item['url'] );    
 		$permalink = Path::tidy( $this->site_url . '/' . $item['url'] );
 		$moddate = array_key_exists( 'last_modified', $data ) ? date( "Y-m-d", $data['last_modified'] ) : date( "Y-m-d", strtotime("-1 day" ) );
@@ -86,7 +86,7 @@ class Plugin_sitemap extends Plugin {
 			'changefreq' => $this->setFrequency( $moddate ),
 			'priority'   => $this->setPriority( $data )
 		);
-	} // END function parsFolderItem()
+	} // END function parseFolderItem()
   
 	/**
 	 * This adds an item to the sitemap containing a file
