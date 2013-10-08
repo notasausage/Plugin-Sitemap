@@ -46,7 +46,7 @@ The page's URL is generated automatically. The last modification time (`lastmod`
 ## Sitemap Protocol
 For more on how the Sitemaps XML Protocol works, visit: http://www.sitemaps.org/protocol.html
 
-# Custom priority
+## Custom priority
 If you want to change the priority for a folder, page or entry, you can set the priority on a case-by-case basis using the YAML prematter of the markdown file for that item.
 
 For example, to give the homepage of your site a priority of 0.8, edit your `_content/page.md` file and add `priority: 0.8` to the YAML prematter like so:
@@ -60,6 +60,20 @@ _layout: home
 priority: 0.8
 ---
 This is my homepage content.
+```
+
+## Hide items from sitemap
+To prevent non-hidden folders, pages or entries in Statamic from appearing in the sitemap's XML file, set the custom priority of each item to `0` and that item will not appear in the sitemap.
+
+For example, this entry (a testimonial) would not appear in the generated sitemap:
+
+```
+---
+title: P.H. from Boston
+_template: testimonial
+priority: 0
+---
+The service was fantastic, would definitely tell my friends about it.
 ```
 
 # Disclaimer

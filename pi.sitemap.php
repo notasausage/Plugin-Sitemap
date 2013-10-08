@@ -79,13 +79,17 @@ class Plugin_sitemap extends Plugin {
 		$data = Statamic::get_content_meta( "page", $item['url'] );    
 		$permalink = Path::tidy( $this->site_url . '/' . $item['url'] );
 		$moddate = array_key_exists( 'last_modified', $data ) ? date( "Y-m-d", $data['last_modified'] ) : date( "Y-m-d", strtotime("-1 day" ) );
+		$priority = $this->setPriority($data);
 
-		$this->data[] = array(
-			'loc'        => $permalink,
-			'lastmod'    => $moddate,
-			'changefreq' => $this->setFrequency( $moddate ),
-			'priority'   => $this->setPriority( $data )
-		);
+		// Add this folder item if priority wasn't set to 0
+		if( $priority ) {
+			$this->data[] = array(
+				'loc'        => $permalink,
+				'lastmod'    => $moddate,
+				'changefreq' => $this->setFrequency( $moddate ),
+				'priority'   => $priority
+			);
+		}
 	} // END function parseFolderItem()
   
 	/**
@@ -97,13 +101,17 @@ class Plugin_sitemap extends Plugin {
 		$data = Statamic::get_content_meta( $item['slug'], $folder );
 		$moddate = ( array_key_exists( 'last_modified', $data ) ) ? $data['last_modified'] : date( "Y-m-d", strtotime( "-1 day" ) );
 		$permalink = Path::tidy( $this->site_url . '/' . $item['url'] );
+		$priority = $this->setPriority($data);
 		
-		$this->data[] = array(
-			'loc'        => $permalink,
-			'lastmod'    => date( "Y-m-d", $moddate ),
-			'changefreq' => $this->setFrequency( $moddate ),
-			'priority'   => $this->setPriority( $data )
-		);
+		// Add this item if priority wasn't set to 0
+		if( $priority ) {
+			$this->data[] = array(
+				'loc'        => $permalink,
+				'lastmod'    => date( "Y-m-d", $moddate ),
+				'changefreq' => $this->setFrequency( $moddate ),
+				'priority'   => $priority
+			);
+		}
 	} // END function parseFileItem()
 
 	/**
